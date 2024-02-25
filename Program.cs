@@ -6,40 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.DevTools.V119.DOM;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAutomation
 {
     class Program
     {
         ChromeDriver driver;
-        ChromeDriver driver2;
-       
-        static void Main(string[] args)
+        
+
+        public void seleniumBasicCommandsforPageNavigation()
         {
-            Program obj = new Program();
-            //obj.seleniumBasicCommandsforPageNavigation();
-            //obj.findingelementsandperformormingActions();
-            //string CustID = obj.newcustomer();
-            //obj.editcustomerid(CustID);
-            //obj.editcustomeridPage();
-            //obj.DeleteCustumer(CustID);
-          //  Program obj2 = new Program();
-            //obj2.linkedin();
-            Program obj4 = new Program();
-             obj4.linkedin();
-           // obj4.udemylogin();
-        }
-          
-        public void seleniumBasicCommandsforPageNavigation() 
-        {
+         
             driver = new ChromeDriver();
-            driver.Navigate().GoToUrl("https://demo.guru99.com/v4/");
-            //to go to thw url of the webpage
-
+            driver.Navigate().GoToUrl("https://www.ebay.co.uk/");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
         }
 
-        public void findingelementsandperformormingActions() 
+        public void findingelementsandperformormingActions()
         {
+            cookiesAccept();
+            Thread.Sleep(1000);
             IWebElement userIDelement = driver.FindElement(By.Name("uid"));
             userIDelement.Click();
             userIDelement.SendKeys("mngr47659");
@@ -52,6 +39,33 @@ namespace WebAutomation
             loginIDElement.Click();
 
 
+            // IWebElement exampleelemenr = driver.FindElement(By.PartialLinkText("Customer"));
+            //NewcustomerLink.Click();
+        }
+
+        public void cookiesAccept()
+        {
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                wait.PollingInterval = TimeSpan.FromSeconds(1);
+                // We are navigating to the frame of pop up
+                IWebElement iframeElement = wait.Until(driver => driver.FindElement(By.Id("gdpr-consent-notice")));
+                driver.SwitchTo().Frame(iframeElement);
+
+                // Set up an explicit wait for the cookies pop-up to be present
+                // Replace "acceptButtonId" with the actual ID or other locator of the "Accept" button
+                Thread.Sleep(2000);
+                IWebElement acceptButton = driver.FindElement(By.Id("save"));
+                acceptButton.Click();                // Click the "Accept" button
+                driver.SwitchTo().DefaultContent();
+            }
+            catch (TimeoutException)
+            {
+                // Handle the case where the cookies pop-up did not appear
+                Console.WriteLine("Cookies pop-up not found or already accepted.");
+                driver.SwitchTo().DefaultContent();
+            }
         }
 
         //class is a prototype(blue print)  class defines how a prototype or blue print should be
@@ -150,19 +164,19 @@ namespace WebAutomation
             driver.FindElement(By.Name("AccSubmit")).Click();
         }
 
-        public void linkedin() 
-        {
-            driver2 = new ChromeDriver();
-            driver2.Navigate().GoToUrl("https://www.linkedin.com/home");
-            IWebElement linkedinloginelement = driver2.FindElement(By.Name("session_key"));
-            linkedinloginelement.Click();
-            linkedinloginelement.SendKeys("saikiranpeddapally@outlook.com");
-            IWebElement loginpasswordelement = driver2.FindElement(By.Id("session_password"));
-            loginpasswordelement.Click();
-            loginpasswordelement.SendKeys("Mando@2272");
-            IWebElement linkedinloginbuttonelement = driver2.FindElement(By.CssSelector("button[data-id='sign-in-form__submit-btn']"));
-            linkedinloginbuttonelement.Click();
-        }
+        //public void linkedin() 
+        //{
+        //    driver2 = new ChromeDriver();
+        //    driver2.Navigate().GoToUrl("https://www.linkedin.com/home");
+        //    IWebElement linkedinloginelement = driver2.FindElement(By.Name("session_key"));
+        //    linkedinloginelement.Click();
+        //    linkedinloginelement.SendKeys("saikiranpeddapally@outlook.com");
+        //    IWebElement loginpasswordelement = driver2.FindElement(By.Id("session_password"));
+        //    loginpasswordelement.Click();
+        //    loginpasswordelement.SendKeys("Mando@2272");
+        //    IWebElement linkedinloginbuttonelement = driver2.FindElement(By.CssSelector("button[data-id='sign-in-form__submit-btn']"));
+        //    linkedinloginbuttonelement.Click();
+        //}
 
         ChromeDriver driver3;
         public void udemylogin() 
@@ -193,4 +207,14 @@ namespace WebAutomation
             IWebElement YoutubeLeoElement = driver4.FindElement(By.ClassName("style-scope ytd-video-renderer"));
         }
     }
+
+    // Implicit wait is set on the object i.e., driver it is applicable to the entire diriver existance
+    // you don't have to call it every time 
+    // Implicit wait do perform and action if the item not found it will implicitly wait for the amount of time defined
+    // and retry if not found returns timesout exception
+
+
+    
+
+
 }
