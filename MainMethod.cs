@@ -13,9 +13,9 @@ namespace WebAutomation
         {
             Ebay obj = new Ebay();
             obj.Navigate_to_Ebay();
-            obj.Search_On_Ebay("electronics");
-            obj.FindingElements(10);
+            obj.SearchOnAmazon();
+            obj.findingElementsOnAmazon();
+            //obj.closeBrowser();
         }
-
     }
 }
